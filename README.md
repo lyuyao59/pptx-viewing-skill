@@ -1,38 +1,59 @@
-# pptx__viewing
+# pptx__viewing · PDF/PPTX 课件转 Obsidian 笔记
 
-**一个 Claude Code Skill**，用于读取 PDF/PPTX 课件，自动筛选重要页面截图，生成一份以解释为主的 Obsidian Markdown 笔记。
+一个适配 Claude Code 的 Skill，用于读取 PDF 或 PPTX 课件，**真正理解内容后**再生成一份图文并茂的 Obsidian Markdown 笔记。
+
+不是把每页截图堆在一起，而是先读懂课件，挑出值得看的图，用自己的话写解释。
+
+---
+
+## 30 秒开始
+
+```bash
+npx skills add lyuyao59/pptx-viewing-skill@pptx__viewing
+```
+
+安装后直接对 Claude Code 说：
+
+```
+帮我看一下这个PPT：C:\Desktop\实验四.pdf，笔记放到 D:\work\obsidian\项目课 里
+```
+
+也可以这样说：
+
+```
+这个课件我看不懂，帮我生成图文讲解
+把这个PDF整理成笔记
+```
 
 ---
 
 ## 它能做什么
 
-不是简单地把每页截图堆在一起，而是真正「读懂」课件后再写笔记：
-
-1. 提取全部文字，整体理解内容和难度
+1. 提取全部文字，整体理解课件内容和难度
 2. 把每页渲染成图片并全部看一遍
-3. **只保留重要的图**——根据课件难度动态调整比例（入门约30%，中等约50%，较难约60-70%）
-4. 用自己的话写解释，不复述 PPT 原文
+3. **只保留重要的图**——根据难度动态调整比例：入门约 30%，中等约 50%，较难约 60-70%
+4. 用自己的话写解释，不复述 PPT 原文，字数按理解难度分配
 5. 写完后自动删掉未引用的图片，输出目录保持整洁
 
 输出的是一份可以直接拿来复习的笔记，不是课件的截图合集。
 
 ---
 
-## 安装
+## 效果
 
-```bash
-npx skills add lyuyao59/pptx-viewing-skill@pptx__viewing
-```
+- 📖 **先理解再动笔**：读完全部内容再决定结构，不是边读边写
+- 🖼 **图片按需插入**：只有「不看图就损失信息」的页面才截图
+- ✍️ **解释性语言**：每个概念说清楚是什么、为什么、和其他概念的区别
+- 🗂 **Obsidian 原生语法**：图片用 `![[]]` 引用，直接在 vault 里打开
+- 🧹 **自动清理**：未引用的渲染图自动删除
 
 ---
 
-## 使用方式
+## 适合 / 不适合
 
-直接用中文告诉 Claude Code：
+**✅ 合适**：大学课件 / 技术 PPT / 培训材料 / 学术讲义 / 看不懂的专业课
 
-- `帮我看一下这个PPT` + 文件路径
-- `把这个课件整理成笔记，放到 D:\xxx 里`
-- `这个PDF我看不懂，帮我生成图文讲解`
+**❌ 不合适**：纯图片扫描件（无文字层）/ 需要保留原始排版的文档
 
 ---
 
@@ -44,14 +65,14 @@ npx skills add lyuyao59/pptx-viewing-skill@pptx__viewing
 pip install pymupdf
 ```
 
-如果要处理 PPTX 文件，建议先用 LibreOffice 转成 PDF：
+处理 PPTX 文件时，建议先用 LibreOffice 转成 PDF：
 
 ```bash
 # macOS
 brew install libreoffice
 
-# Windows（下载安装包）
-# https://www.libreoffice.org/download/download/
+# Windows
+# 下载安装：https://www.libreoffice.org/download/download/
 ```
 
 ---
@@ -60,15 +81,43 @@ brew install libreoffice
 
 ```
 输出目录/
-├── 文件名_笔记.md          ← 笔记正文，使用 Obsidian ![[]] 图片语法
+├── 文件名_笔记.md          ← 笔记正文，Obsidian ![[]] 图片语法
 └── 文件名_images/
     ├── page_03.png         ← 只有笔记中实际引用的页面
-    ├── page_07.png
+    ├── page_08.png
     └── ...
 ```
 
 ---
 
+## 示例请求
+
+```
+帮我看一下这个PPT：C:\Desktop\实验四.pdf，笔记放到 D:\work\obsidian\项目课 里
+```
+
+```
+把这个课件整理成笔记，内容比较难，图多一点
+```
+
+```
+这个PDF我看不懂，帮我生成图文讲解，放到当前目录
+```
+
+---
+
+## FAQ
+
+**支持中文课件吗？** 支持。文字提取有时会乱码，此时以图片内容为主。
+
+**PPTX 直接支持吗？** 建议先另存为 PDF。如果有 LibreOffice，Skill 会自动尝试转换。
+
+**图片数量能控制吗？** 可以在请求里说「图少一点」或「图多一点」，Skill 会调整比例。
+
+**笔记在哪里？** 默认和原文件同级目录，也可以在请求里指定输出路径。
+
+---
+
 ## License
 
-MIT
+MIT · [lyuyao59](https://github.com/lyuyao59)
